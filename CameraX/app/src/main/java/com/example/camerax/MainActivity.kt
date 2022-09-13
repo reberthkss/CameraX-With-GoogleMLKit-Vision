@@ -45,6 +45,7 @@ import androidx.camera.mlkit.vision.MlKitAnalyzer
 import androidx.core.util.Consumer
 import com.google.android.gms.tasks.Task
 import com.google.android.odml.image.MlImage
+import com.google.mlkit.common.sdkinternal.ExecutorSelector
 import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.barcode.internal.BarcodeScannerImpl
@@ -54,6 +55,7 @@ import com.google.mlkit.vision.face.FaceDetector
 import com.google.mlkit.vision.face.FaceDetectorOptions
 import com.google.mlkit.vision.interfaces.Detector
 import java.util.List
+import java.util.concurrent.ThreadPoolExecutor
 
 
 typealias LumaListener = (luma: Double) -> Unit
@@ -241,7 +243,7 @@ class MainActivity : AppCompatActivity() {
 
             try {
                 cameraController.unbind()
-                val executor = ContextCompat.getMainExecutor(this)
+                val executor = Executors.newFixedThreadPool(50)
                 cameraController.setImageAnalysisAnalyzer(
                     executor,
                     MlKitAnalyzer(
