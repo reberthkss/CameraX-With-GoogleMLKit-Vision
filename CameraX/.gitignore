@@ -1,6 +1,7 @@
 *.iml
 .gradle
 .idea
+/CameraX/.idea
 /local.properties
 /.idea/caches
 /.idea/libraries
