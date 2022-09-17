@@ -40,16 +40,16 @@
 
         <ImageView
             android:id="@+id/semaphore_10"
-            android:layout_width="5dp"
-            android:layout_height="10dp"
+            android:layout_width="@dimen/semaphore_base_width"
+            android:layout_height="@dimen/semaphore_height_10"
             android:src="@drawable/semaphore"
             android:layout_weight="1"
             app:tint="@color/semaphore_red" />
 
         <ImageView
             android:id="@+id/semaphore_20"
-            android:layout_width="5dp"
-            android:layout_height="20dp"
+            android:layout_width="@dimen/semaphore_base_width"
+            android:layout_height="@dimen/semaphore_height_20"
             android:src="@drawable/semaphore"
             app:tint="@color/semaphore_red"
             android:layout_weight="1"
@@ -57,8 +57,8 @@
 
         <ImageView
             android:id="@+id/semaphore_30"
-            android:layout_width="5dp"
-            android:layout_height="30dp"
+            android:layout_width="@dimen/semaphore_base_width"
+            android:layout_height="@dimen/semaphore_height_30"
             android:src="@drawable/semaphore"
             app:tint="@color/semaphore_red"
             android:layout_weight="1"
@@ -66,8 +66,8 @@
 
         <ImageView
             android:id="@+id/semaphore_40"
-            android:layout_width="5dp"
-            android:layout_height="40dp"
+            android:layout_width="@dimen/semaphore_base_width"
+            android:layout_height="@dimen/semaphore_height_40"
             android:src="@drawable/semaphore"
             app:tint="@color/semaphore_red"
             android:layout_weight="1"
@@ -75,8 +75,8 @@
 
         <ImageView
             android:id="@+id/semaphore_50"
-            android:layout_width="5dp"
-            android:layout_height="50dp"
+            android:layout_width="@dimen/semaphore_base_width"
+            android:layout_height="@dimen/semaphore_height_50"
             android:src="@drawable/semaphore"
             app:tint="@color/semaphore_yellow"
             android:layout_weight="1"
@@ -84,8 +84,8 @@
 
         <ImageView
             android:id="@+id/semaphore_60"
-            android:layout_width="wrap_content"
-            android:layout_height="60dp"
+            android:layout_width="@dimen/semaphore_base_width"
+            android:layout_height="@dimen/semaphore_height_60"
             android:src="@drawable/semaphore"
             app:tint="@color/semaphore_yellow"
             android:layout_weight="1"
@@ -93,8 +93,8 @@
 
         <ImageView
             android:id="@+id/semaphore_70"
-            android:layout_width="wrap_content"
-            android:layout_height="70dp"
+            android:layout_width="@dimen/semaphore_base_width"
+            android:layout_height="@dimen/semaphore_height_70"
             android:src="@drawable/semaphore"
             app:tint="@color/semaphore_yellow"
             android:layout_weight="1"
@@ -102,8 +102,8 @@
 
         <ImageView
             android:id="@+id/semaphore_80"
-            android:layout_width="wrap_content"
-            android:layout_height="80dp"
+            android:layout_width="@dimen/semaphore_base_width"
+            android:layout_height="@dimen/semaphore_height_80"
             android:src="@drawable/semaphore"
             app:tint="@color/semaphore_yellow"
             android:layout_weight="1"
@@ -111,8 +111,8 @@
 
         <ImageView
             android:id="@+id/semaphore_90"
-            android:layout_width="wrap_content"
-            android:layout_height="90dp"
+            android:layout_width="@dimen/semaphore_base_width"
+            android:layout_height="@dimen/semaphore_height_90"
             android:src="@drawable/semaphore"
             app:tint="@color/semaphore_green"
             android:layout_weight="1"
@@ -120,8 +120,8 @@
 
         <ImageView
             android:id="@+id/semaphore_100"
-            android:layout_width="wrap_content"
-            android:layout_height="100dp"
+            android:layout_width="@dimen/semaphore_base_width"
+            android:layout_height="@dimen/semaphore_height_100"
             android:src="@drawable/semaphore"
             app:tint="@color/semaphore_green"
             android:layout_weight="1"
