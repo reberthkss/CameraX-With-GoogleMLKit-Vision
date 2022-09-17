@@ -17,55 +17,34 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import android.widget.Toast
 import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.camera.core.Preview
-import androidx.camera.core.CameraSelector
 import android.util.Log
-import androidx.camera.core.ImageAnalysis
+import androidx.activity.viewModels
+import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCaptureException
-import androidx.camera.core.ImageProxy
 import androidx.camera.video.FallbackStrategy
 import androidx.camera.video.MediaStoreOutputOptions
 import androidx.camera.video.Quality
 import androidx.camera.video.QualitySelector
 import androidx.camera.video.VideoRecordEvent
-import androidx.camera.view.CameraController
 import androidx.camera.view.LifecycleCameraController
 import androidx.core.content.PermissionChecker
 import com.example.camerax.databinding.ActivityMainBinding
-import com.google.mlkit.vision.barcode.BarcodeScannerOptions
-import com.google.mlkit.vision.barcode.BarcodeScanning
-import java.nio.ByteBuffer
 import java.text.SimpleDateFormat
 import java.util.Locale
-import com.google.android.datatransport.runtime.ExecutionModule_ExecutorFactory.executor
-
 import androidx.camera.view.CameraController.COORDINATE_SYSTEM_VIEW_REFERENCED
-
 import androidx.camera.mlkit.vision.MlKitAnalyzer
-import androidx.core.util.Consumer
-import com.google.android.gms.tasks.Task
-import com.google.android.odml.image.MlImage
-import com.google.mlkit.vision.barcode.BarcodeScanner
-import com.google.mlkit.vision.barcode.common.Barcode
-import com.google.mlkit.vision.barcode.internal.BarcodeScannerImpl
-import com.google.mlkit.vision.common.InputImage
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
+import com.example.camerax.presentation.vm.MainViewModel
 import com.google.mlkit.vision.face.FaceDetection
-import com.google.mlkit.vision.face.FaceDetector
 import com.google.mlkit.vision.face.FaceDetectorOptions
 import com.google.mlkit.vision.interfaces.Detector
-import java.util.List
+import dagger.hilt.android.AndroidEntryPoint
 
-
-typealias LumaListener = (luma: Double) -> Unit
-
-
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var viewBinding: ActivityMainBinding
-
-    private var imageCapture: ImageCapture? = null
-
-    private var videoCapture: VideoCapture<Recorder>? = null
-    private var recording: Recording? = null
+    private val viewModel by viewModels<MainViewModel>()
 
     private lateinit var cameraExecutor: ExecutorService
 
@@ -81,12 +60,75 @@ class MainActivity : AppCompatActivity() {
             ActivityCompat.requestPermissions(
                 this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
         }
-
-        // Set up the listeners for take photo and video capture buttons
-        viewBinding.imageCaptureButton.setOnClickListener { takePhoto() }
-        viewBinding.videoCaptureButton.setOnClickListener { captureVideo() }
-
         cameraExecutor = Executors.newSingleThreadExecutor()
+        setup()
+    }
+
+    private fun setup() {
+        setupObservers()
+    }
+
+    private fun setupObservers() {
+        viewModel.smilingProbability.observe(this) { newSmilingProbability ->
+            viewBinding.smileTemperature.alpha = newSmilingProbability
+        }
+        viewModel.semaphoreProbability.observe(this) { semaphoreProbability ->
+            updateSemaphore(semaphoreProbability)
+
+        }
+    }
+
+    private fun updateSemaphore(semaphoreProbability: Float) {
+        viewBinding.semaphore10.alpha = if (semaphoreProbability < 0.1f) {
+            0.5f
+        } else {
+            semaphoreProbability
+        }
+        viewBinding.semaphore20.alpha = if (semaphoreProbability < 0.2f) {
+            0.5f
+        } else {
+            semaphoreProbability
+        }
+        viewBinding.semaphore30.alpha = if (semaphoreProbability < 0.3f) {
+            0.5f
+        } else {
+            semaphoreProbability
+        }
+        viewBinding.semaphore40.alpha = if (semaphoreProbability < 0.4f) {
+            0.5f
+        } else {
+            semaphoreProbability
+        }
+        viewBinding.semaphore50.alpha = if (semaphoreProbability < 0.5f) {
+            0.5f
+        } else {
+            semaphoreProbability
+        }
+        viewBinding.semaphore60.alpha = if (semaphoreProbability < 0.6f) {
+            0.5f
+        } else {
+            semaphoreProbability
+        }
+        viewBinding.semaphore70.alpha = if (semaphoreProbability < 0.7f) {
+            0.5f
+        } else {
+            semaphoreProbability
+        }
+        viewBinding.semaphore80.alpha = if (semaphoreProbability < 0.8f) {
+            0.5f
+        } else {
+            semaphoreProbability
+        }
+        viewBinding.semaphore90.alpha = if (semaphoreProbability < 0.9f) {
+            0.5f
+        } else {
+            semaphoreProbability
+        }
+        viewBinding.semaphore100.alpha = if (semaphoreProbability < 0.98f) {
+            0.5f
+        } else {
+            semaphoreProbability
+        }
     }
 
     override fun onRequestPermissionsResult(
@@ -107,119 +149,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun takePhoto() {
-
-
-        // Create time stamped name and MediaStore entry.
-        val name = SimpleDateFormat(FILENAME_FORMAT, Locale.US)
-            .format(System.currentTimeMillis())
-        val contentValues = ContentValues().apply {
-            put(MediaStore.MediaColumns.DISPLAY_NAME, name)
-            put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
-            if(Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
-                put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/CameraX-Image")
-            }
-        }
-
-        // Create output options object which contains file + metadata
-        val outputOptions = ImageCapture.OutputFileOptions
-            .Builder(contentResolver,
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                contentValues)
-            .build()
-
-        // Set up image capture listener, which is triggered after photo has
-        // been taken
-        viewBinding.viewFinder.controller?.takePicture(
-            outputOptions,
-            ContextCompat.getMainExecutor(this),
-            object : ImageCapture.OnImageSavedCallback {
-                override fun onError(exc: ImageCaptureException) {
-                    Log.e(TAG, "Photo capture failed: ${exc.message}", exc)
-                }
-
-                override fun
-                        onImageSaved(output: ImageCapture.OutputFileResults){
-                    val msg = "Photo capture succeeded: ${output.savedUri}"
-                    Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
-                    Log.d(TAG, msg)
-                }
-            }
-        )
-
-    }
-
-    private fun captureVideo() {
-        val videoCapture = this.videoCapture ?: return
-
-        viewBinding.videoCaptureButton.isEnabled = false
-
-        val curRecording = recording
-        if (curRecording != null) {
-            // Stop the current recording session.
-            curRecording.stop()
-            recording = null
-            return
-        }
-
-        // create and start a new recording session
-        val name = SimpleDateFormat(FILENAME_FORMAT, Locale.US)
-            .format(System.currentTimeMillis())
-        val contentValues = ContentValues().apply {
-            put(MediaStore.MediaColumns.DISPLAY_NAME, name)
-            put(MediaStore.MediaColumns.MIME_TYPE, "video/mp4")
-            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
-                put(MediaStore.Video.Media.RELATIVE_PATH, "Movies/CameraX-Video")
-            }
-        }
-
-        val mediaStoreOutputOptions = MediaStoreOutputOptions
-            .Builder(contentResolver, MediaStore.Video.Media.EXTERNAL_CONTENT_URI)
-            .setContentValues(contentValues)
-            .build()
-        recording = videoCapture.output
-            .prepareRecording(this, mediaStoreOutputOptions)
-            .apply {
-                if (PermissionChecker.checkSelfPermission(this@MainActivity,
-                        Manifest.permission.RECORD_AUDIO) ==
-                    PermissionChecker.PERMISSION_GRANTED)
-                {
-                    withAudioEnabled()
-                }
-            }
-            .start(ContextCompat.getMainExecutor(this)) { recordEvent ->
-                when(recordEvent) {
-                    is VideoRecordEvent.Start -> {
-                        viewBinding.videoCaptureButton.apply {
-                            text = getString(R.string.stop_capture)
-                            isEnabled = true
-                        }
-                    }
-                    is VideoRecordEvent.Finalize -> {
-                        if (!recordEvent.hasError()) {
-                            val msg = "Video capture succeeded: " +
-                                    "${recordEvent.outputResults.outputUri}"
-                            Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT)
-                                .show()
-                            Log.d(TAG, msg)
-                        } else {
-                            recording?.close()
-                            recording = null
-                            Log.e(TAG, "Video capture ends with error: " +
-                                    "${recordEvent.error}")
-                        }
-                        viewBinding.videoCaptureButton.apply {
-                            text = getString(R.string.start_capture)
-                            isEnabled = true
-                        }
-                    }
-                }
-            }
-    }
-
     private fun startCamera() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
-        imageCapture = ImageCapture.Builder().build()
 
         cameraProviderFuture.addListener({
             val cameraController = LifecycleCameraController(this)
@@ -229,42 +160,26 @@ class MainActivity : AppCompatActivity() {
                 .build()
             val faceDetector = FaceDetection.getClient(faceDetectionOptions)
 
-            val recorder = Recorder.Builder()
-                .setQualitySelector(
-                    QualitySelector.from(
-                        Quality.HIGHEST,
-                        FallbackStrategy.higherQualityOrLowerThan(Quality.SD)
-                    )
-                )
-                .build()
-            videoCapture = VideoCapture.withOutput(recorder)
-
             try {
                 cameraController.unbind()
                 val executor = ContextCompat.getMainExecutor(this)
                 cameraController.setImageAnalysisAnalyzer(
                     executor,
                     MlKitAnalyzer(
-                        listOf(faceDetector) as kotlin.collections.List<Detector<*>>,
+                        listOf(faceDetector) as List<Detector<*>>,
                         COORDINATE_SYSTEM_VIEW_REFERENCED,
-                        executor,
-                        { result: MlKitAnalyzer.Result? ->
-                            Log.d(
-                                "reberth",
-                                (
-                                        result
-                                            ?.getValue(faceDetector)
-                                            ?.firstOrNull { it != null }
-                                            ?.smilingProbability
-                                            ?.times(100F)
-                                            ?.toString()
-                                            ?.plus(" %")
-                                        ) ?: ""
-                            )
-                        }
-                    )
+                        executor
+                    ) { result: MlKitAnalyzer.Result? ->
+                        result
+                            ?.getValue(faceDetector)
+                            ?.firstOrNull { it != null }
+                            ?.smilingProbability
+                            ?.let { smilingProbability ->
+                                viewModel.setSmilingProbability(smilingProbability)
+                            }
+                    }
                 )
-
+                cameraController.cameraSelector = CameraSelector.DEFAULT_FRONT_CAMERA
                 cameraController.bindToLifecycle(this)
                 viewBinding.viewFinder.controller = cameraController
 
@@ -273,7 +188,6 @@ class MainActivity : AppCompatActivity() {
             }
 
         }, ContextCompat.getMainExecutor(this))
-
     }
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
@@ -287,8 +201,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     companion object {
-        private const val TAG = "CameraXApp"
-        private const val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
         private const val REQUEST_CODE_PERMISSIONS = 10
         private val REQUIRED_PERMISSIONS =
             mutableListOf (
