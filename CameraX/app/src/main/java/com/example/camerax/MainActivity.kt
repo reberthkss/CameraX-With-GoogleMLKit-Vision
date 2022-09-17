@@ -41,6 +41,19 @@ import com.google.mlkit.vision.face.FaceDetectorOptions
 import com.google.mlkit.vision.interfaces.Detector
 import dagger.hilt.android.AndroidEntryPoint
 
+const val BASE_OPACITY = 0.5f
+
+private const val SEMAPHORE_10 = 0.1f
+private const val SEMAPHORE_20 = 0.2f
+private const val SEMAPHORE_30 = 0.3f
+private const val SEMAPHORE_40 = 0.4f
+private const val SEMAPHORE_50 = 0.5f
+private const val SEMAPHORE_60 = 0.6f
+private const val SEMAPHORE_70 = 0.7f
+private const val SEMAPHORE_80 = 0.8f
+private const val SEMAPHORE_90 = 0.9f
+private const val SEMAPHORE_100 = 0.98f
+
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var viewBinding: ActivityMainBinding
@@ -79,53 +92,53 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateSemaphore(semaphoreProbability: Float) {
-        viewBinding.semaphore10.alpha = if (semaphoreProbability < 0.1f) {
-            0.5f
+        viewBinding.semaphore10.alpha = if (semaphoreProbability < SEMAPHORE_10) {
+            BASE_OPACITY
         } else {
             semaphoreProbability
         }
-        viewBinding.semaphore20.alpha = if (semaphoreProbability < 0.2f) {
-            0.5f
+        viewBinding.semaphore20.alpha = if (semaphoreProbability < SEMAPHORE_20) {
+            BASE_OPACITY
         } else {
             semaphoreProbability
         }
-        viewBinding.semaphore30.alpha = if (semaphoreProbability < 0.3f) {
-            0.5f
+        viewBinding.semaphore30.alpha = if (semaphoreProbability < SEMAPHORE_30) {
+            BASE_OPACITY
         } else {
             semaphoreProbability
         }
-        viewBinding.semaphore40.alpha = if (semaphoreProbability < 0.4f) {
-            0.5f
+        viewBinding.semaphore40.alpha = if (semaphoreProbability < SEMAPHORE_40) {
+            BASE_OPACITY
         } else {
             semaphoreProbability
         }
-        viewBinding.semaphore50.alpha = if (semaphoreProbability < 0.5f) {
-            0.5f
+        viewBinding.semaphore50.alpha = if (semaphoreProbability < SEMAPHORE_50) {
+            BASE_OPACITY
         } else {
             semaphoreProbability
         }
-        viewBinding.semaphore60.alpha = if (semaphoreProbability < 0.6f) {
-            0.5f
+        viewBinding.semaphore60.alpha = if (semaphoreProbability < SEMAPHORE_60) {
+            BASE_OPACITY
         } else {
             semaphoreProbability
         }
-        viewBinding.semaphore70.alpha = if (semaphoreProbability < 0.7f) {
-            0.5f
+        viewBinding.semaphore70.alpha = if (semaphoreProbability < SEMAPHORE_70) {
+            BASE_OPACITY
         } else {
             semaphoreProbability
         }
-        viewBinding.semaphore80.alpha = if (semaphoreProbability < 0.8f) {
-            0.5f
+        viewBinding.semaphore80.alpha = if (semaphoreProbability < SEMAPHORE_80) {
+            BASE_OPACITY
         } else {
             semaphoreProbability
         }
-        viewBinding.semaphore90.alpha = if (semaphoreProbability < 0.9f) {
-            0.5f
+        viewBinding.semaphore90.alpha = if (semaphoreProbability < SEMAPHORE_90) {
+            BASE_OPACITY
         } else {
             semaphoreProbability
         }
-        viewBinding.semaphore100.alpha = if (semaphoreProbability < 0.98f) {
-            0.5f
+        viewBinding.semaphore100.alpha = if (semaphoreProbability < SEMAPHORE_100) {
+            BASE_OPACITY
         } else {
             semaphoreProbability
         }

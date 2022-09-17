@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import com.example.camerax.BASE_OPACITY
 import dagger.hilt.EntryPoint
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -12,8 +13,8 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(): ViewModel() {
     private val _smilingProbability = MutableLiveData(0f)
     val smilingProbability = Transformations.map(_smilingProbability) {
-        if (it < 0.5f) {
-            0.5f
+        if (it < BASE_OPACITY) {
+            BASE_OPACITY
         } else {
             it
         }
