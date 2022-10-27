@@ -12,30 +12,121 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-
-
-    <Button
-        android:id="@+id/image_capture_button"
-        android:layout_width="110dp"
-        android:layout_height="110dp"
-        android:layout_marginBottom="50dp"
-        android:layout_marginEnd="50dp"
-        android:elevation="2dp"
-        android:text="@string/take_photo"
+    <ImageView
+        android:id="@+id/smileTemperature"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:layout_marginBottom="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/vertical_centerline" />
+        app:layout_constraintEnd_toStartOf="@+id/vertical_centerline"
+        app:layout_constraintStart_toStartOf="parent"
+        android:src="@drawable/sentiment_satisfied_48px"
+        android:contentDescription="Medidor de sorriso"
+        android:alpha="0.5"
+        app:tint="@color/white"
+        />
 
-    <Button
-        android:id="@+id/video_capture_button"
-        android:layout_width="110dp"
-        android:layout_height="110dp"
-        android:layout_marginBottom="50dp"
-        android:layout_marginStart="50dp"
-        android:elevation="2dp"
-        android:text="@string/start_capture"
+    <LinearLayout
+        android:id="@+id/semaphore"
+        android:layout_width="80dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="32dp"
+        android:orientation="horizontal"
+
+        android:rotationX="180"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/vertical_centerline" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/vertical_centerline">
+
+        <ImageView
+            android:id="@+id/semaphore_10"
+            android:layout_width="@dimen/semaphore_base_width"
+            android:layout_height="@dimen/semaphore_height_10"
+            android:src="@drawable/semaphore"
+            android:layout_weight="1"
+            app:tint="@color/semaphore_red" />
+
+        <ImageView
+            android:id="@+id/semaphore_20"
+            android:layout_width="@dimen/semaphore_base_width"
+            android:layout_height="@dimen/semaphore_height_20"
+            android:src="@drawable/semaphore"
+            app:tint="@color/semaphore_red"
+            android:layout_weight="1"
+            />
+
+        <ImageView
+            android:id="@+id/semaphore_30"
+            android:layout_width="@dimen/semaphore_base_width"
+            android:layout_height="@dimen/semaphore_height_30"
+            android:src="@drawable/semaphore"
+            app:tint="@color/semaphore_red"
+            android:layout_weight="1"
+            />
+
+        <ImageView
+            android:id="@+id/semaphore_40"
+            android:layout_width="@dimen/semaphore_base_width"
+            android:layout_height="@dimen/semaphore_height_40"
+            android:src="@drawable/semaphore"
+            app:tint="@color/semaphore_red"
+            android:layout_weight="1"
+            />
+
+        <ImageView
+            android:id="@+id/semaphore_50"
+            android:layout_width="@dimen/semaphore_base_width"
+            android:layout_height="@dimen/semaphore_height_50"
+            android:src="@drawable/semaphore"
+            app:tint="@color/semaphore_yellow"
+            android:layout_weight="1"
+            />
+
+        <ImageView
+            android:id="@+id/semaphore_60"
+            android:layout_width="@dimen/semaphore_base_width"
+            android:layout_height="@dimen/semaphore_height_60"
+            android:src="@drawable/semaphore"
+            app:tint="@color/semaphore_yellow"
+            android:layout_weight="1"
+            />
+
+        <ImageView
+            android:id="@+id/semaphore_70"
+            android:layout_width="@dimen/semaphore_base_width"
+            android:layout_height="@dimen/semaphore_height_70"
+            android:src="@drawable/semaphore"
+            app:tint="@color/semaphore_yellow"
+            android:layout_weight="1"
+            />
+
+        <ImageView
+            android:id="@+id/semaphore_80"
+            android:layout_width="@dimen/semaphore_base_width"
+            android:layout_height="@dimen/semaphore_height_80"
+            android:src="@drawable/semaphore"
+            app:tint="@color/semaphore_yellow"
+            android:layout_weight="1"
+            />
+
+        <ImageView
+            android:id="@+id/semaphore_90"
+            android:layout_width="@dimen/semaphore_base_width"
+            android:layout_height="@dimen/semaphore_height_90"
+            android:src="@drawable/semaphore"
+            app:tint="@color/semaphore_green"
+            android:layout_weight="1"
+            />
+
+        <ImageView
+            android:id="@+id/semaphore_100"
+            android:layout_width="@dimen/semaphore_base_width"
+            android:layout_height="@dimen/semaphore_height_100"
+            android:src="@drawable/semaphore"
+            app:tint="@color/semaphore_green"
+            android:layout_weight="1"
+            />
+    </LinearLayout>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/vertical_centerline"

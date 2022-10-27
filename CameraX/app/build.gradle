@@ -1,6 +1,10 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+    id 'org.jetbrains.kotlin.android'
+
 }
 
 android {
@@ -37,6 +41,46 @@ android {
 }
 
 dependencies {
+    implementation 'androidx.core:core-ktx:+'
+
+// CameraX core library using the camera2 implementation
+    def camerax_version = "1.2.0-beta01"
+    def lifecycle_version = "2.2.0"
+    def hilt_version = "2.38.1"
+    def viewmodel_lifecycle = "2.5.1"
+    def ktx_extension_version = "1.9.0"
+    def ktx_fragment_extension_version = "1.5.2"
+    def ktx_lifecycle_event_extension_version = "2.6.0-alpha02"
+
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$viewmodel_lifecycle"
+    implementation "com.google.mlkit:barcode-scanning:17.0.2"
+    implementation "com.google.android.gms:play-services-mlkit-face-detection:17.1.0"
+    implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
+    implementation "androidx.fragment:fragment-ktx:$ktx_fragment_extension_version"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$ktx_lifecycle_event_extension_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$ktx_lifecycle_event_extension_version"
+
+
+    // Dependency Injection
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-compiler:$hilt_version"
+
+    implementation "androidx.core:core-ktx:$ktx_extension_version"
+
+    // The following line is optional, as the core library is included indirectly by camera-camera2
+    implementation "androidx.camera:camera-core:${camerax_version}"
+    implementation "androidx.camera:camera-camera2:${camerax_version}"
+    // If you want to additionally use the CameraX Lifecycle library
+    implementation "androidx.camera:camera-lifecycle:${camerax_version}"
+    // If you want to additionally use the CameraX View class
+    implementation "androidx.camera:camera-view:${camerax_version}"
+    // If you want to additionally add CameraX ML Kit Vision Integration
+    implementation "androidx.camera:camera-mlkit-vision:${camerax_version}"
+    // If you want to additionally use the CameraX Extensions library
+    implementation "androidx.camera:camera-extensions:${camerax_version}"
+
+
 
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.appcompat:appcompat:1.4.2'
